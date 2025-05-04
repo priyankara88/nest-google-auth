@@ -5,6 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
+import { GoogleStrategy } from './strategies/google.stretegy';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -15,9 +17,18 @@ import configuration from './config/configuration';
       }),
       inject: [ConfigService],
     }),
+
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('jwt.secret'),
+        expire: configService.get<string>('jwt.expire'),
+      }),
+      inject: [ConfigService],
+      global: true,
+    }),
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, GoogleStrategy],
 })
 export class AppModule {}
