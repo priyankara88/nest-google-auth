@@ -6,7 +6,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserEntity } from './entities/create.user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
